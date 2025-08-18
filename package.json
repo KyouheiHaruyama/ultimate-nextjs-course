@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.16",
     "eslint-config-prettier": "^10.1.8",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-n": "^17.21.3",
