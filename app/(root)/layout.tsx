@@ -1,12 +1,19 @@
 import { ReactNode } from 'react'
-import Navbar from "@/components/navigation/navbar";
+import {SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar";
 
-const AuthLayout = ({ children }: { children: ReactNode }) => {
+import Navbar from "@/components/navigation/navbar";
+import LeftSidebar from "@/components/navigation/sidebar/LeftSidebarNavigation";
+
+const HomeLayout = ({ children }: { children: ReactNode }) => {
     return (
-        <main>
-            <Navbar />
-            {children}
-        </main>
+        <SidebarProvider>
+            <LeftSidebar />
+            <main>
+                <Navbar />
+                <SidebarTrigger />
+                {children}
+            </main>
+        </SidebarProvider>
     )
 }
-export default AuthLayout
+export default HomeLayout
