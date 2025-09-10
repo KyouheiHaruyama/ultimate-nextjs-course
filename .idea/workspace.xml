@@ -5,19 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="547fdbe3-7b9e-424e-8e2c-7277d174fa08" name="変更" comment="">
-      <change afterPath="$PROJECT_DIR$/components/cards/TagCard.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/navigation/LeftSidebar.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/navigation/RightSidebar.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/constants/techMap.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/search/LocalSearch.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/url.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(root)/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(root)/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/navigation/navbar/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/navigation/navbar/index.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/navigation/sidebar/LeftSidebarNavigation.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/navigation/sidebar/SidebarNavLinks.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(root)/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(root)/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/constants/routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/constants/routes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -107,7 +102,7 @@
       <workItem from="1755179988410" duration="1414000" />
       <workItem from="1755228900490" duration="58159000" />
       <workItem from="1755765866611" duration="7415000" />
-      <workItem from="1755827314483" duration="20135000" />
+      <workItem from="1755827314483" duration="32899000" />
     </task>
     <servers />
   </component>
