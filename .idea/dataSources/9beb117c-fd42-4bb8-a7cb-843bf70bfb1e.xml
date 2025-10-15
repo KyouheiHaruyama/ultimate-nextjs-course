@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataSource name="@devflow.bgdbiex.mongodb.net">
+  <database-model serializer="dbm" dbms="MONGO" family-id="MONGO" format-version="4.53">
+    <root id="1">
+      <ServerVersion>8.0.15</ServerVersion>
+    </root>
+    <schema id="2" parent="1" name="admin"/>
+    <schema id="3" parent="1" name="local"/>
+  </database-model>
+</dataSource>
