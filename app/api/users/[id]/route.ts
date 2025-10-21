@@ -48,6 +48,7 @@ export async function PUT(request: Request, {params}: { params: { id: string } }
         await dbConnect();
 
         const body = await request.json();
+        // 検証に失敗した場合、エラーをスローします。データの構造に高い信頼性があり、潜在的なエラーを早期に検出したい場合に使用
         const validatedData = UserSchema.partial().parse(body);
 
         const updatedUser = await User.findByIdAndUpdate(
