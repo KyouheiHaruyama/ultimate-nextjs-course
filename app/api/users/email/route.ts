@@ -11,6 +11,8 @@ export async function POST(request: Request) {
     const { email } = await request.json();
 
     try {
+        // 成功した場合は解析されたデータを含む結果オブジェクトを、失敗した場合はエラーオブジェクトを返します。
+        // これは予測可能性が低いデータを扱う場合に最適で、検証の問題を適切に処理できる
         const validatedData = UserSchema.partial().safeParse({ email });
         if (!validatedData.success) throw new ValidationError(validatedData.error.flatten().fieldErrors);
 
