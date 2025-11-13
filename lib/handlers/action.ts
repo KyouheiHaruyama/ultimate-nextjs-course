@@ -1,19 +1,19 @@
 "use server"
 
-import { ZodSchema } from "zod/v3";
-import {ZodError} from "zod";
+import {ZodError, ZodObject, ZodType} from "zod";
 import {UnauthorizedError, ValidationError} from "@/lib/http-errors";
 
 import {getSession} from "next-auth/react";
 import {auth} from "@/auth";
 import {Session} from "next-auth";
 import dbConnect from "@/lib/mongoose";
+import {ZodSchema} from "zod/v3";
 
 // T : どのようなデータ型が入るかを呼び出し側で指定する仕組み
 //     TypeScript の Generics 要は TypeScript における型推論する仕組み
 type ActionOptions<T> = {
     params?: T;
-    schema?: ZodSchema<T>;
+    schema?: ZodObject;
     authorize?: boolean;
 }
 

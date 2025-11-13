@@ -6,8 +6,9 @@ import User from "@/database/models/user.models";
 import {NextResponse} from "next/server";
 import {UserSchema} from "@/lib/validations";
 
-export async function GET(_:Request, { params }: { params: { id: string } }) {
-    const { id } = params;
+export async function GET(_:Request, { params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
+    console.log(id);
     if (!id) throw new NotFoundError("User");
 
     try {
