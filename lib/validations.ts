@@ -121,4 +121,12 @@ export const SignInWithOAuthSchema = z.object({
         email: z.email({ message: "Please provide a valid email address." }),
         image: z.url({ message: "Invalid image URL" }).optional(),
     })
-})
+});
+
+export const EditQuestionSchema = AskQuestionSchema.extend({
+    questionId: z.string().min(1, { message: "Question ID is required." })
+});
+
+export const GetQuestionSchema = z.object({
+    questionId: z.string().min(1, { message: "Question ID is required." })
+});
