@@ -18,7 +18,7 @@ const Metric = ({
 }: MetricProps) => {
     const metricContent = (
         <>
-            <Image src={imageURL} width={16} height={16} alt={alt} className={`rounded-full object-contain ${imageStyles}`} />
+            <Image src={imageURL || "/icons/avatar.svg"} width={16} height={16} alt={alt} className={`rounded-full object-contain ${imageStyles}`} />
 
             <p className={`${textStyles} flex items-center gap-1`}>
                 {value}

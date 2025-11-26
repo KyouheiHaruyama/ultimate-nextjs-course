@@ -4,12 +4,15 @@ import Link from "next/link";
 import {ROUTES} from "@/constants/routes";
 import TagCard from "@/components/cards/TagCard";
 import Metric from "@/components/Metric";
+import {Question, Tag} from "@/types/global";
 
 interface QuestionCardProps {
     question: Question
 }
 
-const QuestionCard = ({ question: { _id, title, tags, author, upvotes, answers, views, createdAt }}: QuestionCardProps ) => {
+const QuestionCard = (
+    { question: { _id, title, tags, author, upvotes, answers, views, createdAt }}: QuestionCardProps
+) => {
     return (
         <div className="card-wrapper rounded-[10px] p-9 sm:px-11">
             <div className="flex flex-col-reverse items-start justify-between gap-5 sm:flex-row">
@@ -29,11 +32,11 @@ const QuestionCard = ({ question: { _id, title, tags, author, upvotes, answers, 
 
             <div className="flex-between mt-6 w-full flex-wrap gap-3">
                 <Metric
-                    imageURL={author.image}
-                    alt={author.name}
-                    value={author.name}
+                    imageURL={author && author.image ? author.image : '/images/avatar.png'}
+                    alt={author && author.name ? author.name : 'Anonymous'}
+                    value={author && author.name ? author.name : 'Anonymous'}
                     title={`⚫︎ asked ${getTimestamp(createdAt)}`}
-                    href={ROUTES.PROFILE(author._id)}
+                    href={author && author._id ? ROUTES.PROFILE(author._id) : undefined}
                     textStyles="body-medium text-dark400_light700"
                     isAuthor
                 />
