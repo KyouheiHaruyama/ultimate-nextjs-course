@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import {techMap} from "@/constants/techMap";
-import {string} from "zod";
+import { techDescriptionMap } from "@/constants/techDescriptionMap";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -11,6 +11,15 @@ export const getDeviconClassName = (techName: string) => {
     const normalizedTechName = techName.replace(/[ .]/g, "").toLowerCase();
 
     return techMap[normalizedTechName] ? `${techMap[normalizedTechName]} colored` : "devicon-devicon-plain colored";
+}
+
+/**
+ * 技術名を正規化し、その説明文を返します。
+ * マップに存在しない場合は、汎用的なメッセージを返します。
+ */
+export const getTechDescription = (techName: string): string => {
+    const normalizedTechName = techName.replace(/[ .]/g, "").toLowerCase();
+    return techDescriptionMap[normalizedTechName] ?? "指定された技術に関する説明は利用できません。";
 }
 
 export const getTimestamp = (createdAt: Date) => {
