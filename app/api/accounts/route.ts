@@ -1,7 +1,6 @@
 import dbConnect from "@/lib/mongoose";
 import {NextResponse} from "next/server";
 import handleError from "@/lib/handlers/error";
-import {APIErrorResponse} from "@/types/global";
 import {AccountSchema} from "@/lib/validations";
 import {ForbiddenError} from "@/lib/http-errors";
 import Account from "@/database/models/account.models";

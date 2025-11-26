@@ -3,7 +3,6 @@ import GitHub from "next-auth/providers/github";
 import Google from "@auth/core/providers/google";
 import Credentials from "next-auth/providers/credentials";
 
-import {ActionResponse} from "@/types/global";
 import {api} from "@/lib/api";
 import {IAccountDoc} from "@/database/models/account.models";
 import {SignInSchema} from "@/lib/validations";

@@ -4,7 +4,6 @@ import Link from "next/link";
 import {ROUTES} from "@/constants/routes";
 import TagCard from "@/components/cards/TagCard";
 import Metric from "@/components/Metric";
-import {Question, Tag} from "@/types/global";
 
 interface QuestionCardProps {
     question: Question

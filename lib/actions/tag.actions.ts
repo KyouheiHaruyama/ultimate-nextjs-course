@@ -1,10 +1,8 @@
-// import {ActionResponse, ErrorResponse, PaginatedSearchParams} from "@/types/global";
 import action from "@/lib/handlers/action";
 import {PaginatedSearchParamsSchema} from "@/lib/validations";
 import handleError from "@/lib/handlers/error";
 import {FilterQuery} from "mongoose";
 import Tag from "@/database/models/tag.models";
-import {ErrorResponse} from "@/types/global";
 
 export const getTags = async (
     params: PaginatedSearchParams

@@ -2,18 +2,12 @@
 
 import mongoose, {FilterQuery} from "mongoose";
 
-import QuestionModel from "@/database/models/question.models";
+import Question, {IQuestionDoc} from "@/database/models/question.models";
 import Tag, {ITagDoc} from "@/database/models/tag.models";
 import TagQuestion from "@/database/models/tag-question.models";
 
 import action from "@/lib/handlers/action";
 import handleError from "@/lib/handlers/error";
-import {
-    ActionResponse,
-    ErrorResponse,
-    PaginatedSearchParams,
-    Question
-} from "@/types/global";
 import {
     AskQuestionSchema,
     EditQuestionSchema,
@@ -21,7 +15,9 @@ import {
     PaginatedSearchParamsSchema
 } from "@/lib/validations";
 
-export async function createQuestion (params: CreateQuestionParams): Promise<ActionResponse<Question>> {
+export async function createQuestion (
+    params: CreateQuestionParams
+): Promise<ActionResponse<Question>> {
     const validationResult = await action({
         params,
         schema: AskQuestionSchema,
@@ -39,7 +35,7 @@ export async function createQuestion (params: CreateQuestionParams): Promise<Act
     session.startTransaction();
 
     try {
-        const [question] = await QuestionModel.create([{ title, content, author: userId }], { session });
+        const [question] = await Question.create([{ title, content, author: userId }], { session });
         if (!question) throw new Error('Failed to create question');
 
         const tagIds: mongoose.Types.ObjectId[] = [];
@@ -61,7 +57,7 @@ export async function createQuestion (params: CreateQuestionParams): Promise<Act
 
         await TagQuestion.insertMany(tagQuestionDocuments, { session });
 
-        await QuestionModel.findByIdAndUpdate(
+        await Question.findByIdAndUpdate(
             question._id,
             { $push: { tags: { $each: tagIds }}},
             { session }
@@ -78,7 +74,9 @@ export async function createQuestion (params: CreateQuestionParams): Promise<Act
     }
 }
 
-export async function editQuestion  (params: EditQuestionParams): Promise<ActionResponse<Question>> {
+export async function editQuestion (
+    params: EditQuestionParams
+): Promise<ActionResponse<IQuestionDoc>> {
     const validationResult = await action({
         params,
         schema: EditQuestionSchema,
@@ -97,7 +95,7 @@ export async function editQuestion  (params: EditQuestionParams): Promise<Action
 
     try {
         // Question 内容の更新
-        const question = await QuestionModel.findById(questionId).populate('tags');
+        const question = await Question.findById(questionId).populate('tags');
         if (!question) throw new Error('Question not found');
 
         if (question.author.toString() !== userId) throw new Error('Unauthorized');
@@ -181,7 +179,9 @@ export async function editQuestion  (params: EditQuestionParams): Promise<Action
     }
 }
 
-export async function getQuestion  (params: GetQuestionsParams): Promise<ActionResponse<Question>> {
+export async function getQuestion (
+    params: GetQuestionsParams
+): Promise<ActionResponse<Question>> {
     const validationResult = await action({
         params,
         schema: GetQuestionSchema,
@@ -195,7 +195,7 @@ export async function getQuestion  (params: GetQuestionsParams): Promise<ActionR
     const { questionId } = validationResult.params!;
 
     try {
-        const question = await QuestionModel.findById(questionId).populate('tags');
+        const question = await Question.findById(questionId).populate('tags');
         if (!question) throw new Error('Question not found');
 
         return { success: true, data: JSON.parse(JSON.stringify(question)) };
@@ -204,7 +204,9 @@ export async function getQuestion  (params: GetQuestionsParams): Promise<ActionR
     }
 }
 
-export async function getQuestions (params: PaginatedSearchParams): Promise<ActionResponse<{ questions: Question[]; isNext: boolean }>> {
+export async function getQuestions (
+    params: PaginatedSearchParams
+): Promise<ActionResponse<{ questions: Question[]; isNext: boolean }>> {
     const validationResult = await action({
         params,
         schema: PaginatedSearchParamsSchema
@@ -215,7 +217,7 @@ export async function getQuestions (params: PaginatedSearchParams): Promise<Acti
     const skip = (Number(page) - 1) * pageSize;
     const limit = Number(pageSize);
 
-    const filterQuery: FilterQuery<typeof QuestionModel> = {}
+    const filterQuery: FilterQuery<typeof Question> = {}
     if (filter === "recommended") return { success: true, data: { questions: [], isNext: false } };
 
     if (query) {
@@ -225,7 +227,7 @@ export async function getQuestions (params: PaginatedSearchParams): Promise<Acti
         ]
     }
 
-    let sortCriteria = {};
+    let sortCriteria: {};
     switch (filter) {
         case "newest":
             sortCriteria = { createdAt: -1 };
@@ -243,9 +245,9 @@ export async function getQuestions (params: PaginatedSearchParams): Promise<Acti
     }
 
     try {
-        const totalQuestions = await QuestionModel.countDocuments(filterQuery);
+        const totalQuestions = await Question.countDocuments(filterQuery);
 
-        const questions = await QuestionModel.find(filterQuery)
+        const questions = await Question.find(filterQuery)
             .populate('tags', "name")
             .populate("author", "name image")
             .lean()

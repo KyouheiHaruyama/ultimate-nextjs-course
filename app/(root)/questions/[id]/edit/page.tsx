@@ -3,7 +3,6 @@ import QuestionForm from "@/components/forms/QuestionForm";
 import {auth} from "@/auth";
 import {notFound, redirect} from "next/navigation";
 import {ROUTES} from "@/constants/routes";
-import {RouteParams} from "@/types/global";
 import {getQuestion} from "@/lib/actions/question.actions";
 
 const EditQuestion = async ({ params }: RouteParams) => {

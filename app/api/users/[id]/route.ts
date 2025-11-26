@@ -1,6 +1,6 @@
 import {NotFoundError, ValidationError} from "@/lib/http-errors";
 import handleError from "@/lib/handlers/error";
-import {APIErrorResponse} from "@/types/global";
+
 import dbConnect from "@/lib/mongoose";
 import User from "@/database/models/user.models";
 import {NextResponse} from "next/server";

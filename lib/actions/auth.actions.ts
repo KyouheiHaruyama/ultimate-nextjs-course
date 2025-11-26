@@ -1,7 +1,7 @@
 "use server";
 
 import mongoose from "mongoose";
-import {ActionResponse, ErrorResponse} from "@/types/global";
+
 import action from "@/lib/handlers/action";
 import {SignUpSchema, SignInSchema} from "@/lib/validations";
 import handleError from "@/lib/handlers/error";

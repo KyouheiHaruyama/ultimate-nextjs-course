@@ -1,5 +1,4 @@
 import handleError from "@/lib/handlers/error";
-import {APIErrorResponse} from "@/types/global";
 import dbConnect from "@/lib/mongoose";
 
 import {NextResponse} from "next/server";

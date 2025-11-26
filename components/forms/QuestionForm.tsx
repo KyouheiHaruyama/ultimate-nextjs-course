@@ -17,7 +17,6 @@ import {toast} from "sonner";
 import {useRouter} from "next/navigation";
 import {ROUTES} from "@/constants/routes";
 import {ReloadIcon} from "@radix-ui/react-icons";
-import {Question} from "@/types/global";
 
 const Editor = dynamic(() => import('@/components/editor'), {
     // Make sure we turn SSR off
@@ -91,7 +90,9 @@ const QuestionForm = ({ question, isEdit = false }: QuestionFormProps) => {
                         description: "Question updated successfully"
                     });
 
-                    if (result.data) router.push(ROUTES.QUESTION(result.data._id));
+                    if (result.data && typeof result.data._id === "string") {
+                        router.push(ROUTES.QUESTION(result.data._id));
+                    }
                 } else {
                     toast(`Error ${result.status}`, {
                         description: result.error?.message || "Something went wrong"
