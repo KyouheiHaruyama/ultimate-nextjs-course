@@ -1,5 +1,4 @@
 import handleError from "@/lib/handlers/error";
-import {APIErrorResponse} from "@/types/global";
 import {AccountSchema} from "@/lib/validations";
 import {NotFoundError, ValidationError} from "@/lib/http-errors";
 import Account from "@/database/models/account.models";
