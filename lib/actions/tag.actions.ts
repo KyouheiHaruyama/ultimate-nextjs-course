@@ -92,7 +92,7 @@ export const getTagQuestions = async (
             .select("_id title views answers upvotes downvotes author createdAt")
             .populate([
                 { path: "author", select: "name image" },
-                { path: "tag", select: "name" }
+                { path: "tags", select: "name" }
             ])
             .sort({ createdAt: -1 })
             .skip(skip)
