@@ -1,9 +1,87 @@
 import React from 'react'
+import UserAvatar from "@/components/UserAvatar";
+import {getQuestion} from "@/lib/actions/question.actions";
+import {notFound, redirect} from "next/navigation";
+import Link from "next/link";
+import {ROUTES} from "@/constants/routes";
+import Metric from "@/components/Metric";
+import {formatNumber, getTimestamp} from "@/lib/utils";
+import TagCard from "@/components/cards/TagCard";
+import Preview from "@/components/editor/Preview";
 
 const QuestionDetails = async ({ params }: RouteParams) => {
     const { id } = await params;
+    if (!id) return notFound();
+
+    const { success, data: question } = await getQuestion({ questionId: id });
+    if (!success || !question) return redirect('/404')
+
+    const { author, createdAt, answers, views, tags, content, title } = question;
+
     return (
-        <div>QuestionDetails</div>
+        <>
+            <div className="flex-start w-full flex-col">
+                <div className="flex w-full flex-col-reverse justify-between">
+                    <div className="flex items-center justify-start gap-1">
+                        <UserAvatar
+                            id={author && author._id ? author._id : 'Anonymous'}
+                            name={author && author.name ? author.name : 'Anonymous'}
+                            className="size-[22px]"
+                            fallbackClassName="text-[10px]"
+                        />
+
+                        <Link href={author && author._id ? ROUTES.PROFILE(author._id) : ROUTES.HOME}>
+                            <p className="paragraph-semibold text-dark300_light700">{author && author.name ? author.name : 'Anonymous'}</p>
+                        </Link>
+                    </div>
+
+                    <div className="flex justify-end">
+                        <p>Votes</p>
+                    </div>
+                </div>
+
+                <h2 className="h2-semibold text-dark200_light900 mt-3.5 w-full">
+                    {title}
+                </h2>
+            </div>
+
+            <div className="mb-8 mt-5 flex flex-wrap gap-4">
+                <Metric
+                    imageURL="/icons/clock.svg"
+                    alt="clock icon"
+                    value={` asked ${getTimestamp(new Date(createdAt))}`}
+                    title=""
+                    textStyles="small-medium text-dark400_light700"
+                />
+                <Metric
+                    imageURL="/icons/message.svg"
+                    alt="message icon"
+                    value={answers}
+                    title=""
+                    textStyles="small-medium text-dark400_light700"
+                />
+                <Metric
+                    imageURL="/icons/eye.svg"
+                    alt="eye icon"
+                    value={formatNumber(views)}
+                    title=""
+                    textStyles="small-medium text-dark400_light700"
+                />
+            </div>
+
+            <Preview content={content} />
+
+            <div className="mt-8 flex flex-wrap gap-2">
+                {tags.map((tag: Tag) => (
+                    <TagCard
+                        key={tag._id}
+                        _id={tag._id as string}
+                        name={tag.name}
+                        compact
+                    />
+                ))}
+            </div>
+        </>
     )
 }
 export default QuestionDetails
