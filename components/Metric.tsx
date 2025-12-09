@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from "next/link";
 import Image from "next/image";
+import {cn} from "@/lib/utils";
 
 interface MetricProps {
     imageURL: string;
@@ -11,10 +12,11 @@ interface MetricProps {
     textStyles?: string;
     imageStyles?: string;
     isAuthor?: boolean;
+    titleStyles?: string;
 }
 
 const Metric = ({
-    imageURL, alt, value, title, href, textStyles, imageStyles, isAuthor
+    imageURL, alt, value, title, href, textStyles, imageStyles, isAuthor, titleStyles
 }: MetricProps) => {
     const metricContent = (
         <>
@@ -23,7 +25,12 @@ const Metric = ({
             <p className={`${textStyles} flex items-center gap-1`}>
                 {value}
 
-                <span className={`small-regular line-clamp-1 ${isAuthor ? "max-sm:hidden" : ""}`}>{title}</span>
+                {title ?
+                    <span className={cn(`small-regular line-clamp-1`, titleStyles)}>
+                        {title}
+                    </span>
+                    : null
+                }
             </p>
         </>
     );
