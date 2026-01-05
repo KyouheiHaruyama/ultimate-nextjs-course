@@ -8,6 +8,12 @@ import Metric from "@/components/Metric";
 import {formatNumber, getTimestamp} from "@/lib/utils";
 import TagCard from "@/components/cards/TagCard";
 import Preview from "@/components/editor/Preview";
+import View from "@/app/(root)/questions/view";
+
+// - ** Initial Page Load: ** When a user visits the question details page, the server renders the page with the current view count. This is because the page is a server component, so it's getting executed right on the server.
+// - ** View Count Increment: ** After the page is loaded, a server action is called to increment the view count in the database. This server action is called from the client side, meaning only after the page has been rendered, dom has been created, and a client call is made through `useEffect`.
+// - ** Stale Data Issue: ** The problem arises because the page was rendered and served to the client before the view count was incremented. This means the user doesn't see the updated view count immediately.
+// - ** Delayed Update: ** Thus, the user would only see the updated view count if they navigate away and then return to the page or if they refresh the page.
 
 const QuestionDetails = async ({ params }: RouteParams) => {
     const { id } = await params;
@@ -20,6 +26,7 @@ const QuestionDetails = async ({ params }: RouteParams) => {
 
     return (
         <>
+            <View questionId={id} />
             <div className="flex-start w-full flex-col">
                 <div className="flex w-full flex-col-reverse justify-between">
                     <div className="flex items-center justify-start gap-1">
