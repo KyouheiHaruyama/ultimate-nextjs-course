@@ -25,14 +25,6 @@ const Home = async ({ searchParams }: SearchParams) => {
 
     const { questions } = data || {};
 
-    // const { data } = await axios.get("/api/questions", { query: { search: query } });
-
-    // const filteredQuestions = questions.filter((question) => {
-    //     const matchesSearch = question.title.toLowerCase().includes(query?.toLowerCase());
-    //     const matchesFilter = filter ? question.tags.some(tag => tag.name.toLowerCase() === filter.toLowerCase()) : true;
-    //     return matchesSearch && matchesFilter;
-    // });
-
     return (
         <>
             <section className="flex w-full flex-col-reverse justify-between gap-4 sm:flex-row sm:items-center">
