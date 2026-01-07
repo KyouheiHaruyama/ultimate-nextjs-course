@@ -21,7 +21,7 @@ import {ReloadIcon} from "@radix-ui/react-icons";
 const Editor = dynamic(() => import('@/components/editor'), {
     // Make sure we turn SSR off
     ssr: false
-})
+});
 
 interface QuestionFormProps {
     question?: Question;
