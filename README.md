@@ -29,6 +29,15 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
+Key points to remember about `after` function:
+
+- It runs asynchronously after the response has been sent to the client.
+- It doesn't affect the response time experienced by the client.
+- It's useful for tasks that don't need to block the response, such as logging analytics, or cleanup operations.
+- It can access information about the response but cannot modify it.
+
+This flow allows for efficient request handling while still enabling important post-response tasks to be performed.
+
 ## Deploy on Vercel
 
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.

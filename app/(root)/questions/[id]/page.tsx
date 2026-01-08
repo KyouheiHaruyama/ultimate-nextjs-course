@@ -8,6 +8,7 @@ import Metric from "@/components/Metric";
 import {formatNumber, getTimestamp} from "@/lib/utils";
 import TagCard from "@/components/cards/TagCard";
 import Preview from "@/components/editor/Preview";
+import AnswerForm from "@/components/forms/AnswerForm";
 
 // - ** Initial Page Load: ** When a user visits the question details page, the server renders the page with the current view count. This is because the page is a server component, so it's getting executed right on the server.
 // - ** View Count Increment: ** After the page is loaded, a server action is called to increment the view count in the database. This server action is called from the client side, meaning only after the page has been rendered, dom has been created, and a client call is made through `useEffect`.
@@ -90,6 +91,10 @@ const QuestionDetails = async ({ params }: RouteParams) => {
                     />
                 ))}
             </div>
+
+            <section className="my-5">
+                <AnswerForm questionId={question._id} />
+            </section>
         </>
     )
 }
