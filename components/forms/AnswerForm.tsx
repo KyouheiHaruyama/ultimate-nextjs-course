@@ -1,31 +1,28 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-
-import { Button } from "@/components/ui/button"
-import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormMessage,
-} from "@/components/ui/form"
+import {useRef, useState, useTransition} from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import {AnswerSchema} from "@/lib/validations";
-import {useRef, useState} from "react";
-import dynamic from "next/dynamic";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+
+import { Button } from "@/components/ui/button";
 import {MDXEditorMethods} from "@mdxeditor/editor";
-import {ReloadIcon} from "@radix-ui/react-icons";
+import dynamic from "next/dynamic";
+import { z } from "zod";
+import {createAnswer} from "@/lib/actions/answer.actions";
+import {toast} from "sonner";
+
 import Image from "next/image";
+import {ReloadIcon} from "@radix-ui/react-icons";
 
 const Editor = dynamic(() => import('@/components/editor'), {
     // Make sure we turn SSR off
     ssr: false
 });
 
-const AnswerForm = () => {
-    const [isSubmitting, setIsSubmitting] = useState(false);
+const AnswerForm = ({ questionId }: { questionId: string }) => {
+    const [isAnswering, startAnsweringTransition] = useTransition();
     const [isAISubmitting, setIsAISubmitting] = useState(false);
 
     const editorRef = useRef<MDXEditorMethods>(null);
@@ -37,8 +34,24 @@ const AnswerForm = () => {
     });
 
     // 2. Define a submit handler.
-    const handleSubmit = async (values: z.infer<typeof AnswerSchema>) => {
-        console.log(values);
+    const handleCreateAnswer = async (values: z.infer<typeof AnswerSchema>) => {
+        startAnsweringTransition(async () => {
+            const result = await createAnswer({
+                questionId,
+                content: values.content,
+            });
+
+            if (result.success) {
+                form.reset();
+                toast.success("Success", {
+                    description: "Your answer has been posted successfully."
+                });
+            } else {
+                toast.error("Error", {
+                    description: result.error?.message
+                });
+            }
+        });
     };
 
     return (
@@ -64,7 +77,7 @@ const AnswerForm = () => {
 
             <Form {...form}>
                 <form
-                    onSubmit={form.handleSubmit(handleSubmit)}
+                    onSubmit={form.handleSubmit(handleCreateAnswer)}
                     className="mt-6 flex flex-col w-full gap-10"
                 >
                     <FormField
@@ -86,7 +99,7 @@ const AnswerForm = () => {
 
                     <div className="flex justify-end">
                         <Button type="submit" className="primary-gradient w-fit">
-                            {isSubmitting ? <>
+                            {isAnswering ? <>
                                 <ReloadIcon className="mr-2 size-4 animate-spin" />
                                 Posting...
                             </> : "Post Answer"}
