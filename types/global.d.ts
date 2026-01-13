@@ -54,6 +54,13 @@ declare global {
         filter?: string;
         sort?: string;
     }
+
+    interface Answer {
+        _id: string;
+        author: Author;
+        content: string;
+        createdAt: Date;
+    }
 }
 
 // このファイルをモジュールとして扱わせつつ、上記で global を拡張
