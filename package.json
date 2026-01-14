@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^3.0.9",
     "@hookform/resolvers": "^5.2.1",
     "@mdxeditor/editor": "^3.47.0",
     "@radix-ui/colors": "^3.0.0",
@@ -20,6 +21,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@tailwindcss/typography": "^0.5.16",
+    "ai": "^6.0.33",
     "bcryptjs": "^3.0.3",
     "bright": "^1.0.0",
     "class-variance-authority": "^0.7.1",
