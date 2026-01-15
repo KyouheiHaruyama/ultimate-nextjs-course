@@ -102,6 +102,8 @@ const QuestionForm = ({ question, isEdit = false }: QuestionFormProps) => {
                 return;
             }
 
+            console.log("Question editorRef:", editorRef, editorRef.current);
+
             const result = await createQuestion(data);
             if (result.success) {
                 toast("Success", {
@@ -152,7 +154,7 @@ const QuestionForm = ({ question, isEdit = false }: QuestionFormProps) => {
                                 Detailed explanation of your problem{" "} <span className="text-primary-500" >*</span>
                             </FormLabel>
                             <FormControl>
-                                <Editor value={field.value} editorRef={editorRef} fieldChange={field.onChange} />
+                                <Editor value={field.value} ref={editorRef} fieldChange={field.onChange} />
                             </FormControl>
                             <FormDescription className="body-regular text-light-700 mt-2.5">
                                 Introduce the problem and expand on what you&apos;ve put in the title.

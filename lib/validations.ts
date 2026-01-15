@@ -170,5 +170,6 @@ export const AIAnswerSchema = z.object({
         .max(130, { message: "Question cannot exceed 130 characters." }),
     content: z
         .string()
-        .min(100, { message: "Answer has to have more than 100 characters." })
+        .min(100, { message: "Answer has to have more than 100 characters." }),
+    userAnswer: z.string().optional()
 })

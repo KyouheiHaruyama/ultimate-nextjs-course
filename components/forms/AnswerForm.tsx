@@ -15,15 +15,25 @@ import {toast} from "sonner";
 
 import Image from "next/image";
 import {ReloadIcon} from "@radix-ui/react-icons";
+import {useSession} from "next-auth/react";
+import {api} from "@/lib/api";
+import editor from "@/components/editor";
 
 const Editor = dynamic(() => import('@/components/editor'), {
     // Make sure we turn SSR off
     ssr: false
 });
 
-const AnswerForm = ({ questionId }: { questionId: string }) => {
+interface AnswerFormProps {
+    questionId: string;
+    questionTitle: string;
+    questionContent: string;
+}
+
+const AnswerForm = ({ questionId, questionTitle, questionContent }: AnswerFormProps) => {
     const [isAnswering, startAnsweringTransition] = useTransition();
     const [isAISubmitting, setIsAISubmitting] = useState(false);
+    const session = useSession();
 
     const editorRef = useRef<MDXEditorMethods>(null);
 
@@ -46,6 +56,10 @@ const AnswerForm = ({ questionId }: { questionId: string }) => {
                 toast.success("Success", {
                     description: "Your answer has been posted successfully."
                 });
+
+                if (editorRef.current) {
+                    editorRef.current.setMarkdown("");
+                }
             } else {
                 toast.error("Error", {
                     description: result.error?.message
@@ -53,6 +67,48 @@ const AnswerForm = ({ questionId }: { questionId: string }) => {
             }
         });
     };
+
+    const generateAIAnswer = async () => {
+        if (session.status !== "authenticated") {
+            return toast("Please log in", {
+                description: "You need to be logged in to use this feature.",
+            });
+        }
+
+        setIsAISubmitting(true);
+
+        const userAnswer = editorRef.current?.getMarkdown();
+
+        try {
+            const { success, data, error } = await api.ai.getAnswer(questionTitle, questionContent, userAnswer);
+            if (!success) {
+                return toast.error("Error", {
+                    description: error?.message
+                });
+            }
+
+            const formattedAnswer = data.replace(/<br>/g, " ").toString().trim();
+
+            if (editorRef.current) {
+                editorRef.current.setMarkdown(formattedAnswer);
+
+                form.setValue("content", formattedAnswer);
+                await form.trigger("content");
+            }
+
+            console.log("SUCCESS");
+
+            toast.success("Success", {
+                description: "AI generated answer has been generated."
+            });
+        } catch (error) {
+            toast.error("Error", {
+                description: error instanceof Error ? error.message : "There was a problem with your request."
+            });
+        } finally {
+            setIsAISubmitting(false);
+        }
+    }
 
     return (
         <div>
@@ -63,6 +119,7 @@ const AnswerForm = ({ questionId }: { questionId: string }) => {
                 <Button
                     className="btn light-border-2 gap-1.5 rounded-md border px-4 py-2.5 text-primary-500 shadow-none dark:text-primary-500"
                     disabled={isAISubmitting}
+                    onClick={generateAIAnswer}
                 >
                     {isAISubmitting ? (
                         <>
@@ -95,7 +152,7 @@ const AnswerForm = ({ questionId }: { questionId: string }) => {
                         render={({ field }) => (
                             <FormItem className="flex w-full flex-col gap-3">
                                 <FormControl>
-                                    <Editor value={field.value} editorRef={editorRef} fieldChange={field.onChange} />
+                                    <Editor value={field.value} ref={editorRef} fieldChange={field.onChange} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>

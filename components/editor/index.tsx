@@ -12,7 +12,7 @@ import {
     linkPlugin, linkDialogPlugin, tablePlugin, imagePlugin, codeBlockPlugin, codeMirrorPlugin, diffSourcePlugin,
 } from '@mdxeditor/editor'
 
-import type { ForwardedRef } from 'react'
+import { forwardRef } from 'react'
 import {basicDark} from "cm6-theme-basic-dark";
 
 import '@mdxeditor/editor/style.css';
@@ -21,11 +21,11 @@ import {useTheme} from "next-themes";
 
 interface EditorProps {
     value: string,
-    fieldChange: (value: string) => void,
-    editorRef: ForwardedRef<MDXEditorMethods> | null
-};
+    fieldChange: (value: string) => void
+}
 
-const Editor = ({ value, editorRef, fieldChange, ...props }: EditorProps) => {
+const Editor = forwardRef<MDXEditorMethods, EditorProps>(
+    ({ value, fieldChange, ...props }: EditorProps, ref) => {
     const { resolvedTheme } = useTheme();
     const theme = resolvedTheme === "dark" ? [basicDark] : [];
     console.log(resolvedTheme);
@@ -33,7 +33,7 @@ const Editor = ({ value, editorRef, fieldChange, ...props }: EditorProps) => {
         <MDXEditor
             key={resolvedTheme}
             markdown={value}
-            ref={editorRef}
+            ref={ref}
             className="background-light800_dark200 light-border-2 markdown-editor dark-editor w-full border grid"
             onChange={fieldChange}
             plugins={[
@@ -109,5 +109,6 @@ const Editor = ({ value, editorRef, fieldChange, ...props }: EditorProps) => {
 
         />
     )
-}
+})
+
 export default Editor
