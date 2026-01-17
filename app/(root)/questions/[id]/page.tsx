@@ -11,6 +11,7 @@ import Preview from "@/components/editor/Preview";
 import AnswerForm from "@/components/forms/AnswerForm";
 import {getAnswers} from "@/lib/actions/answer.actions";
 import AllAnswers from "@/components/answers/AllAnswers";
+import Votes from "@/components/votes/Votes";
 
 // - ** Initial Page Load: ** When a user visits the question details page, the server renders the page with the current view count. This is because the page is a server component, so it's getting executed right on the server.
 // - ** View Count Increment: ** After the page is loaded, a server action is called to increment the view count in the database. This server action is called from the client side, meaning only after the page has been rendered, dom has been created, and a client call is made through `useEffect`.
@@ -59,7 +60,12 @@ const QuestionDetails = async ({ params }: RouteParams) => {
                     </div>
 
                     <div className="flex justify-end">
-                        <p>Votes</p>
+                        <Votes
+                            upvotes={question.upvotes}
+                            hasupVoted={true}
+                            downvotes={question.downvotes}
+                            hasdownVoted={false}
+                        />
                     </div>
                 </div>
 
