@@ -14,6 +14,7 @@ import AllAnswers from "@/components/answers/AllAnswers";
 import Votes from "@/components/votes/Votes";
 import {hasVoted} from "@/lib/actions/vote.actions";
 import SaveQuestion from "@/components/questions/SaveQuestion";
+import {hasSavedQuestion} from "@/lib/actions/collection.actions";
 
 // - ** Initial Page Load: ** When a user visits the question details page, the server renders the page with the current view count. This is because the page is a server component, so it's getting executed right on the server.
 // - ** View Count Increment: ** After the page is loaded, a server action is called to increment the view count in the database. This server action is called from the client side, meaning only after the page has been rendered, dom has been created, and a client call is made through `useEffect`.
@@ -45,7 +46,11 @@ const QuestionDetails = async ({ params }: RouteParams) => {
     const hasVotedPromise = hasVoted({
         targetId: question._id,
         targetType: "question",
-    })
+    });
+
+    const hasSavedQuestionPromise = hasSavedQuestion({
+        questionId: question._id
+    });
 
     const { author, createdAt, answers, views, tags, content, title } = question;
 
@@ -66,7 +71,7 @@ const QuestionDetails = async ({ params }: RouteParams) => {
                         </Link>
                     </div>
 
-                    <div className="flex justify-end">
+                    <div className="flex justify-end items-center gap-4">
                         <Suspense fallback={<div>Loading...</div>}>
                             <Votes
                                 upvotes={question.upvotes}
@@ -78,7 +83,10 @@ const QuestionDetails = async ({ params }: RouteParams) => {
                         </Suspense>
 
                         <Suspense fallback={<div>Loading...</div>}>
-                            <SaveQuestion questionId={question._id} />
+                            <SaveQuestion
+                                questionId={question._id}
+                                hasSavedQuestionPromise={hasSavedQuestionPromise}
+                            />
                         </Suspense>
                     </div>
                 </div>
