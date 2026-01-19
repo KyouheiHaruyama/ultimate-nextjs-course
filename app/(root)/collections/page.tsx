@@ -35,8 +35,6 @@ const Collections = async ({ searchParams }: SearchParams) => {
                 />
             </div>
 
-            <HomeFilter />
-
             <DataRenderer
                 success={success}
                 error={error}
