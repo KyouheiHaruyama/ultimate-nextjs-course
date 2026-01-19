@@ -4,6 +4,7 @@ export const ROUTES = {
     SIGN_UP: "/sign-up",
     ASK_QUESTION: "/ask-question",
     COLLECTION: "/collections",
+    COMMUNITY: "/community",
     TAGS: "/tags",
     JOBS: "/jobs",
     PROFILE: (_id: string) => `/profile/${_id}`,
