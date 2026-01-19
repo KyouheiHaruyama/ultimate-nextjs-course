@@ -76,6 +76,12 @@ declare global {
         portfolio?: string;
         reputation?: number;
     }
+
+    interface Collection {
+        _id: string;
+        author: string | Author;
+        question: Question;
+    }
 }
 
 // このファイルをモジュールとして扱わせつつ、上記で global を拡張
