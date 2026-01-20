@@ -259,7 +259,7 @@ export async function getQuestions (
             .skip(skip)
             .limit(limit);
 
-        const isNext = totalQuestions < skip + questions.length;
+        const isNext = totalQuestions > skip + questions.length;
 
         return {
             success: true,
