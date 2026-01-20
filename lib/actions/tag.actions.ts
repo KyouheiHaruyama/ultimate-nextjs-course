@@ -46,7 +46,7 @@ export const getTags = async (
     try {
         const totalTags = await Tag.countDocuments(filterQuery);
         const tags = await Tag.find(filterQuery).sort(sortCriteria).skip(skip).limit(limit);
-        const isNext = totalTags < skip + tags.length;
+        const isNext = totalTags > skip + tags.length;
 
         return {
             success: true,
@@ -98,7 +98,7 @@ export const getTagQuestions = async (
             .skip(skip)
             .limit(limit);
 
-        const isNext = totalQuestions < skip + questions.length;
+        const isNext = totalQuestions > skip + questions.length;
 
         return {
             success: true,
