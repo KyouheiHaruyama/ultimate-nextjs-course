@@ -14,6 +14,7 @@ import {
     GetQuestionSchema, IncrementViewsSchema,
     PaginatedSearchParamsSchema
 } from "@/lib/validations";
+import dbConnect from "@/lib/mongoose";
 
 export async function createQuestion (
     params: CreateQuestionParams
@@ -72,7 +73,7 @@ export async function createQuestion (
     } finally {
         await session.endSession();
     }
-}
+};
 
 export async function editQuestion (
     params: EditQuestionParams
@@ -177,7 +178,7 @@ export async function editQuestion (
     } finally {
         await session.endSession();
     }
-}
+};
 
 export async function getQuestion (
     params: GetQuestionsParams
@@ -206,7 +207,7 @@ export async function getQuestion (
     } catch (error) {
         return handleError(error) as ErrorResponse;
     }
-}
+};
 
 export async function getQuestions (
     params: PaginatedSearchParams
@@ -268,7 +269,7 @@ export async function getQuestions (
     } catch (error) {
         return handleError(error) as ErrorResponse;
     }
-}
+};
 
 export async function incrementViews (params: IncrementViewsParams): Promise<ActionResponse<{ views: number }>> {
     const validationResult = await action({
@@ -297,7 +298,24 @@ export async function incrementViews (params: IncrementViewsParams): Promise<Act
     } catch (error) {
         return handleError(error) as ErrorResponse;
     }
-}
+};
+
+export async function getHotQuestions(): Promise<ActionResponse<Question[]>> {
+    try {
+        await dbConnect();
+
+        const questions = await Question.find()
+            .sort({ views: -1, upvotes: -1 })
+            .limit(5);
+
+        return {
+            success: true,
+            data: JSON.parse(JSON.stringify(questions))
+        };
+    } catch (error) {
+        return handleError(error) as ErrorResponse;
+    }
+};
 
 // Server Actions are designed to be used in different contexts.
 // 1. In Server Components: They act like regular async functions.
