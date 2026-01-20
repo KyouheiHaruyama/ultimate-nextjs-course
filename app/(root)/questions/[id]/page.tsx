@@ -21,9 +21,11 @@ import {hasSavedQuestion} from "@/lib/actions/collection.actions";
 // - ** Stale Data Issue: ** The problem arises because the page was rendered and served to the client before the view count was incremented. This means the user doesn't see the updated view count immediately.
 // - ** Delayed Update: ** Thus, the user would only see the updated view count if they navigate away and then return to the page or if they refresh the page.
 
-const QuestionDetails = async ({ params }: RouteParams) => {
+const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
     const { id } = await params;
     if (!id) return notFound();
+
+    const { page, pageSize, query, filter } = await searchParams;
 
     const [_, { success, data: question }] = await Promise.all([
         await incrementViews({ questionId: id }),
@@ -38,9 +40,9 @@ const QuestionDetails = async ({ params }: RouteParams) => {
         error: answersError
     } = await getAnswers({
         questionId: id,
-        page: 1,
-        pageSize: 10,
-        filter: 'latest'
+        page: Number(page) || 1,
+        pageSize: Number(pageSize) || 10,
+        filter
     });
 
     const hasVotedPromise = hasVoted({

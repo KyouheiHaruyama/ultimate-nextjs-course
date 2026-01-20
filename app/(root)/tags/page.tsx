@@ -5,6 +5,8 @@ import {ROUTES} from "@/constants/routes";
 import DataRenderer from "@/components/DataRenderer";
 import {EMPTY_TAGS} from "@/constants/states";
 import TagCard from "@/components/cards/TagCard";
+import {TagFilters} from "@/constants/filters";
+import CommonFilter from "@/components/filters/CommonFilter";
 
 const Tags = async ({ searchParams }: RouteParams) => {
     const { page, pageSize, query, filter } = await searchParams;
@@ -25,14 +27,19 @@ const Tags = async ({ searchParams }: RouteParams) => {
                 Tags
             </h1>
 
-            <section className="mt-11">
+            <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
                 <LocalSearch
                     route={ROUTES.TAGS}
                     imgSrc="/icons/search.svg"
                     placeholder="Search tags..."
                     otherClasses="flex-1"
                 />
-            </section>
+
+                <CommonFilter
+                    filters={TagFilters}
+                    otherClasses="min-h-[56px] sm:min-w-[170px]"
+                />
+            </div>
 
             <DataRenderer
                 success={success}
