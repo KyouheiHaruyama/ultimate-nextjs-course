@@ -1,4 +1,4 @@
-import {getUser} from "@/lib/actions/user.actions";
+import {getUser, getUserQuestions} from "@/lib/actions/user.actions";
 import {notFound} from "next/navigation";
 import {auth} from "@/auth";
 import UserAvatar from "@/components/UserAvatar";
@@ -8,11 +8,20 @@ import Link from "next/link";
 import {Button} from "@/components/ui/button";
 import Stats from "@/components/user/Stats";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {ROUTES} from "@/constants/routes";
+import Image from "next/image";
+import DataRenderer from "@/components/DataRenderer";
+import React from "react";
+import {EMPTY_QUESTION} from "@/constants/states";
+import QuestionCard from "@/components/cards/QuestionCard";
+import Pagination from "@/components/Pagination";
 
 
-const Profile = async ({ params }: RouteParams) => {
+const Profile = async ({ params, searchParams }: RouteParams) => {
     const { id } = await params;
     if (!id) return notFound();
+
+    const { page, pageSize } = await searchParams;
 
     const loggedInUser = await auth();
     const { success, data, error } = await getUser({
@@ -26,6 +35,19 @@ const Profile = async ({ params }: RouteParams) => {
     );
 
     const { user, totalAnswers, totalQuestions } = data!;
+
+    const {
+        success: userQuestionsSuccess,
+        data: userQuestions,
+        error: userQuestionsError
+    } = await getUserQuestions({
+        userId: id,
+        page: Number(page) || 1,
+        pageSize: Number(pageSize) || 10
+    });
+
+    const { questions, isNext: hasMoreQuestions } = userQuestions!;
+
     const { _id, name, image, portfolio, location, createdAt, username, bio } = user;
 
     return (
@@ -96,7 +118,21 @@ const Profile = async ({ params }: RouteParams) => {
                         <TabsTrigger value="answers" className="tab">Answers</TabsTrigger>
                     </TabsList>
                     <TabsContent value="top-posts" className="mt-5 flex w-full flex-col gap-6">
-                        List of Questions
+                        <DataRenderer
+                            success={userQuestionsSuccess}
+                            error={userQuestionsError}
+                            data={questions}
+                            empty={EMPTY_QUESTION}
+                            render={(questions) => (
+                                <div className="flex flex-col w-full gap-6">
+                                    {questions.map((question) => (
+                                        <QuestionCard key={question._id} question={question} />
+                                    ))}
+                                </div>
+                            )}
+                        />
+
+                        <Pagination page={page} isNext={hasMoreQuestions} />
                     </TabsContent>
                     <TabsContent value="answers" className="flex w-full flex-col gap-6">
                         List of Answers
