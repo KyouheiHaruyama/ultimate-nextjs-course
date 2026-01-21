@@ -84,6 +84,12 @@ declare global {
         author: string | Author;
         question: Question;
     }
+
+    interface BadgeCounts {
+        GOLD: number;
+        SILVER: number;
+        BRONZE: number;
+    }
 }
 
 // このファイルをモジュールとして扱わせつつ、上記で global を拡張
