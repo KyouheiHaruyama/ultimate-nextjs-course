@@ -8,8 +8,11 @@ import DataRenderer from "@/components/DataRenderer";
 import {getTopTags} from "@/lib/actions/tag.actions";
 
 const RightSidebar = async () => {
-    const { success, data: hotQuestions, error } = await getHotQuestions();
-    const { success: tagSuccess, data: tags, error: tagError } = await getTopTags();
+    const [
+        { success, data: hotQuestions, error },
+        { success: tagSuccess, data: tags, error: tagError }
+    ] = await Promise.all([getHotQuestions(), getTopTags()]);
+
     return (
         <section className="
             pt-36 custom-scrollbar background-light900_dark200 light-border sticky right-0 top-0 flex h-screen
