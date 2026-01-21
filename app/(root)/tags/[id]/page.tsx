@@ -17,7 +17,7 @@ const Page = async ({ params, searchParams }: RouteParams) => {
     const { success, data, error } = await getTagQuestions({
         tagId: id,
         page: Number(page) || 1,
-        pageSize: Number(pageSize) || 1,
+        pageSize: Number(pageSize) || 10,
         query
     });
 

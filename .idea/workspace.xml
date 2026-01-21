@@ -7,7 +7,7 @@
     <list default="true" id="547fdbe3-7b9e-424e-8e2c-7277d174fa08" name="変更" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/navigation/RightSidebar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/navigation/RightSidebar.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/actions/question.actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/actions/question.actions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/actions/tag.actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/actions/tag.actions.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,7 +38,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
     "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "FilterAndPagination",
+    "git-widget-placeholder": "rightSidebar",
     "js.debugger.nextJs.config.created.client": "true",
     "js.debugger.nextJs.config.created.server": "true",
     "junie.onboarding.icon.badge.shown": "true",
@@ -109,7 +109,7 @@
       <workItem from="1757658227755" duration="2908000" />
       <workItem from="1760058798775" duration="95922000" />
       <workItem from="1767587735742" duration="20545000" />
-      <workItem from="1768276819485" duration="62761000" />
+      <workItem from="1768276819485" duration="64201000" />
     </task>
     <servers />
   </component>
