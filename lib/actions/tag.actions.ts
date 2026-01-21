@@ -3,6 +3,7 @@ import {GetTagQuestionsSchema, PaginatedSearchParamsSchema} from "@/lib/validati
 import handleError from "@/lib/handlers/error";
 import {FilterQuery} from "mongoose";
 import {Question, Tag} from "@/database";
+import dbConnect from "@/lib/mongoose";
 
 export const getTags = async (
     params: PaginatedSearchParams
@@ -112,6 +113,21 @@ export const getTagQuestions = async (
         return handleError(error) as ErrorResponse;
     }
 };
+
+export const getTopTags = async (): Promise<ActionResponse<Tag[]>> => {
+    try {
+        await dbConnect();
+
+        const tags = await Tag.find().sort({ questions: -1 }).limit(10);
+
+        return {
+            success: true,
+            data: JSON.parse(JSON.stringify(tags))
+        }
+    } catch (error) {
+        return handleError(error) as ErrorResponse;
+    }
+}
 
 // Make a call to the 'Questions' model and find the questions that contain this tag
 // Make a call to the 'TagQuestions' model and find all related questions together by finding different documents that have the tags mentioned in them
