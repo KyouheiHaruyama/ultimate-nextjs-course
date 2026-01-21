@@ -1,4 +1,4 @@
-import {getUser, getUserAnswers, getUserQuestions} from "@/lib/actions/user.actions";
+import {getUser, getUserAnswers, getUserQuestions, getUserTopTags} from "@/lib/actions/user.actions";
 import {notFound} from "next/navigation";
 import {auth} from "@/auth";
 import UserAvatar from "@/components/UserAvatar";
@@ -12,10 +12,11 @@ import {ROUTES} from "@/constants/routes";
 import Image from "next/image";
 import DataRenderer from "@/components/DataRenderer";
 import React from "react";
-import {EMPTY_ANSWERS, EMPTY_QUESTION} from "@/constants/states";
+import {EMPTY_ANSWERS, EMPTY_QUESTION, EMPTY_TAGS} from "@/constants/states";
 import QuestionCard from "@/components/cards/QuestionCard";
 import Pagination from "@/components/Pagination";
 import AnswerCard from "@/components/cards/AnswerCard";
+import TagCard from "@/components/cards/TagCard";
 
 
 const Profile = async ({ params, searchParams }: RouteParams) => {
@@ -57,8 +58,17 @@ const Profile = async ({ params, searchParams }: RouteParams) => {
         pageSize: Number(pageSize) || 10
     });
 
+    const {
+        success: userTopTagsSuccess,
+        data: userTopTags,
+        error: userTopTagsError
+    } = await getUserTopTags({
+        userId: id,
+    });
+
     const { questions, isNext: hasMoreQuestions } = userQuestions!;
     const { answers, isNext: hasMoreAnswers } = userAnswers!;
+    const { tags } = userTopTags!;
 
     const { _id, name, image, portfolio, location, createdAt, username, bio } = user;
 
@@ -174,7 +184,26 @@ const Profile = async ({ params, searchParams }: RouteParams) => {
                 <div className="flex w-full min-w-[250px] flex-1 flex-col max-lg:hidden">
                     <h3 className="h3-bold text-dark200_light900">Top Tech</h3>
                     <div className="mt-7 flex flex-col gap-4">
-                        <p>List of Tags</p>
+                        <DataRenderer
+                            success={userTopTagsSuccess}
+                            error={userTopTagsError}
+                            data={tags}
+                            empty={EMPTY_TAGS}
+                            render={(tags) => (
+                                <div className="mt-3 flex flex-col w-full gap-4">
+                                    {tags.map((tag) => (
+                                        <TagCard
+                                            key={tag._id}
+                                            _id={tag._id}
+                                            name={tag.name}
+                                            questions={tag.count}
+                                            showCount
+                                            compact
+                                        />
+                                    ))}
+                                </div>
+                            )}
+                        />
                     </div>
                 </div>
             </section>
