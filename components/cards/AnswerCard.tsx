@@ -6,10 +6,12 @@ import {cn, getTimestamp} from "@/lib/utils";
 import Preview from "@/components/editor/Preview";
 import Votes from "@/components/votes/Votes";
 import {hasVoted} from "@/lib/actions/vote.actions";
+import EditDeleteAction from "@/components/user/EditDeleteAction";
 
 interface AnswerCardProps extends Answer {
     containerClasses?: string;
     showReadMore?: boolean;
+    showActionBtns?: boolean;
 }
 
 const AnswerCard = ({
@@ -22,6 +24,7 @@ const AnswerCard = ({
     question,
     containerClasses,
     showReadMore = false,
+    showActionBtns = false
 }: AnswerCardProps) => {
     const hasVotedPromise = hasVoted({
         targetId: _id,
@@ -29,8 +32,14 @@ const AnswerCard = ({
     });
 
     return (
-        <article className={cn("light - border border-b py-10", containerClasses)}>
+        <article className={cn("light - border border-b py-10 relative", containerClasses)}>
             <span id={`answer-${_id}`} className="hash-span" />
+
+            {showActionBtns && (
+                <div className="background-light800_dark200 flex-center absolute -right-2 -top-5 size-9 rounded-full">
+                    <EditDeleteAction type="answer" itemId={_id} />
+                </div>
+            )}
 
             <div className="mb-5 flex flex-col-reverse justify-between gap-5 sm:flex-row sm:items-center sm:gap-2">
                 <div className="flex flex-1 items-start gap-1 sm:items-center">

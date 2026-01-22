@@ -62,8 +62,9 @@ const QuestionDetails = async ({ params, searchParams }: RouteParams) => {
                 <div className="flex w-full flex-col-reverse justify-between">
                     <div className="flex items-center justify-start gap-1">
                         <UserAvatar
-                            id={author && author._id ? author._id : 'Anonymous'}
-                            name={author && author.name ? author.name : 'Anonymous'}
+                            id={author?._id ? author._id : 'Anonymous'}
+                            name={author?.name ? author.name : 'Anonymous'}
+                            imageUrl={author?.image ? author.image : '/icons/avatar.svg'}
                             className="size-[22px]"
                             fallbackClassName="text-[10px]"
                         />
