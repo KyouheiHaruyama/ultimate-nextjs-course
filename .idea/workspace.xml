@@ -5,16 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="547fdbe3-7b9e-424e-8e2c-7277d174fa08" name="変更" comment="">
-      <change afterPath="$PROJECT_DIR$/components/user/EditDeleteAction.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(root)/profile/[id]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(root)/profile/[id]/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(root)/questions/[id]/edit/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(root)/questions/[id]/edit/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/cards/AnswerCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/cards/AnswerCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/cards/QuestionCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/cards/QuestionCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ui/button.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ui/button.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/user/EditDeleteAction.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/user/EditDeleteAction.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/actions/answer.actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/actions/answer.actions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/actions/question.actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/actions/question.actions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/validations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/validations.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/types/action.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/types/action.d.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,7 +112,7 @@
       <workItem from="1757658227755" duration="2908000" />
       <workItem from="1760058798775" duration="95922000" />
       <workItem from="1767587735742" duration="20545000" />
-      <workItem from="1768276819485" duration="87616000" />
+      <workItem from="1768276819485" duration="97172000" />
     </task>
     <servers />
   </component>

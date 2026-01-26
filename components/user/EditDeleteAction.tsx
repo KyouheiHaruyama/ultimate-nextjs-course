@@ -14,6 +14,8 @@ import {
 import Image from "next/image";
 import {toast} from "sonner";
 import {useRouter} from "next/navigation";
+import {deleteQuestion} from "@/lib/actions/question.actions";
+import {deleteAnswer} from "@/lib/actions/answer.actions";
 
 interface EditDeleteActionProps {
     type: string;
@@ -29,17 +31,31 @@ const EditDeleteAction = ({ type, itemId }: EditDeleteActionProps) => {
 
     const handleDelete = async () => {
         if (type === "question") {
-            // Call API to delete question.
+            // Call API to delete Question.
+            const { success } = await deleteQuestion({ questionId: itemId });
 
-            toast.success("Question Deleted", {
-                description: "Your question has been deleted successfully."
-            })
+            if (success) {
+                toast.success("Question Deleted", {
+                    description: "Your question has been deleted successfully."
+                });
+            } else {
+                toast.error("Error", {
+                    description: "An error occurred while deleting your question. Please try again later."
+                });
+            }
         } else if (type === "answer") {
-            // Call API to delete answer.
+            // Call API to delete Answer.
+            const { success } = await deleteAnswer({ answerId: itemId });
 
-            toast.success("Answer Deleted", {
-                description: "Your answer has been deleted successfully."
-            })
+            if (success) {
+                toast.success("Answer Deleted", {
+                    description: "Your answer has been deleted successfully."
+                });
+            } else {
+                toast.error("Error", {
+                    description: "An error occurred while deleting your answer. Please try again later."
+                });
+            }
         }
     };
 
