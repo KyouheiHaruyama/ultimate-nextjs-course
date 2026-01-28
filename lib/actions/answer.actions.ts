@@ -8,6 +8,8 @@ import {Answer, Question, Vote} from "@/database";
 import {revalidatePath} from "next/cache";
 import {ROUTES} from "@/constants/routes";
 import action from "@/lib/handlers/action";
+import {createInteraction} from "@/lib/actions/interaction.actions";
+import {after} from "next/server";
 
 export async function createAnswer (
     params: CreateAnswerParams,
@@ -44,6 +46,15 @@ export async function createAnswer (
 
         question.answers += 1;
         await question.save();
+
+        after(async () => {
+            await createInteraction({
+                action: "post",
+                actionId: newAnswer._id.toString(),
+                actionTarget: "answer",
+                authorId: userId as string
+            });
+        })
 
         await session.commitTransaction();
 

@@ -5,6 +5,7 @@ import {GetUserAnswerSchema, GetUserSchema, GetUserTagsSchema, PaginatedSearchPa
 import handleError from "@/lib/handlers/error";
 import {FilterQuery, PipelineStage, Types} from "mongoose";
 import {Answer, Question, User} from "@/database";
+import {assignBadges} from "@/lib/utils";
 
 export async function getUsers(
     params: PaginatedSearchParams
@@ -70,12 +71,7 @@ export async function getUsers(
 
 export async function getUser(
     params: GetUserParams
-): Promise<ActionResponse<{
-    user: User,
-    totalQuestions: number,
-    totalAnswers: number,
-}>>
-{
+): Promise<ActionResponse<{ user: User }>> {
     const validationResult = await action({
         params,
         schema: GetUserSchema
@@ -91,29 +87,20 @@ export async function getUser(
         const user = await User.findById(userId);
         if (!user) throw new Error('User not found');
 
-        const totalQuestions = await Question.countDocuments({ author: userId });
-        const totalAnswers = await Question.countDocuments({ author: userId });
-
         return {
             success: true,
             data: {
                 user: JSON.parse(JSON.stringify(user)),
-                totalQuestions,
-                totalAnswers
             }
         };
     } catch (error) {
         return handleError(error) as ErrorResponse;
     }
-};
+}
 
 export async function getUserQuestions(
     params: GetUserQuestionsParams
-): Promise<ActionResponse<{
-    questions: Question[],
-    isNext: boolean,
-}>>
-{
+): Promise<ActionResponse<{ questions: Question[], isNext: boolean }>> {
     const validationResult = await action({
         params,
         schema: GetUserSchema
@@ -148,15 +135,11 @@ export async function getUserQuestions(
     } catch (error) {
         return handleError(error) as ErrorResponse;
     }
-};
+}
 
 export async function getUserAnswers(
     params: GetUserAnswersParams
-): Promise<ActionResponse<{
-    answers: Answer[],
-    isNext: boolean,
-}>>
-{
+): Promise<ActionResponse<{ answers: Answer[], isNext: boolean }>> {
     const validationResult = await action({
         params,
         schema: GetUserAnswerSchema
@@ -190,14 +173,11 @@ export async function getUserAnswers(
     } catch (error) {
         return handleError(error) as ErrorResponse;
     }
-};
+}
 
 export async function getUserTopTags(
     params: GetUserTagsParams
-): Promise<ActionResponse<{
-    tags: { _id: string, name: string, count: number }[],
-}>>
-{
+): Promise<ActionResponse<{ tags: { _id: string, name: string, count: number }[] }>> {
     const validationResult = await action({
         params,
         schema: GetUserTagsSchema
@@ -245,4 +225,54 @@ export async function getUserTopTags(
     } catch (error) {
         return handleError(error) as ErrorResponse;
     }
-};
+}
+
+export async function getUserStats(
+    params: GetUserParams
+): Promise<ActionResponse<{ totalQuestions: number, totalAnswers: number, badges: Badges }>> {
+    const validationResult = await action({
+        params,
+        schema: GetUserSchema,
+    });
+
+    if (validationResult instanceof Error) {
+        return handleError(validationResult) as ErrorResponse;
+    }
+
+    const { userId } = validationResult.params!;
+
+    const [questionStats] = await Question.aggregate([
+        { $match: { author: new Types.ObjectId(userId) }},
+        { $group: {
+            _id: null,
+            count: { $sum: 1 },
+            upvotes: { $sum: "$upvotes" },
+            views: { $sum: "$views" }
+        }}
+    ]);
+
+    const [answerStats] = await Answer.aggregate([
+        { $match: { author: new Types.ObjectId(userId) }},
+        { $group: {
+            _id: null,
+            count: { $sum: 1 },
+            upvotes: { $sum: "$upvotes" }
+        }}
+    ]);
+
+    const badges = assignBadges({ criteria: [
+            { type: "QUESTION_COUNT", count: questionStats?.count },
+            { type: "ANSWER_COUNT", count: answerStats?.count },
+            { type: "QUESTION_UPVOTES", count: questionStats?.upvotes + answerStats?.upvotes },
+            { type: "TOTAL_VIEWS", count: questionStats?.views }
+    ]});
+
+    return {
+        success: true,
+        data: {
+            totalQuestions: questionStats?.count,
+            totalAnswers: answerStats?.count,
+            badges
+        }
+    };
+}

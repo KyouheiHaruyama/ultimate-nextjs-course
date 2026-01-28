@@ -91,6 +91,12 @@ declare global {
         SILVER: number;
         BRONZE: number;
     }
+
+    interface Badges {
+        GOLD: number;
+        SILVER: number;
+        BRONZE: number;
+    }
 }
 
 // このファイルをモジュールとして扱わせつつ、上記で global を拡張
