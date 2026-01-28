@@ -1,6 +1,6 @@
 "use server";
 
-import mongoose, {FilterQuery} from "mongoose";
+import mongoose, {FilterQuery, Types} from "mongoose";
 
 import Question, {IQuestionDoc} from "@/database/models/question.models";
 import Tag, {ITagDoc} from "@/database/models/tag.models";
@@ -15,11 +15,11 @@ import {
     PaginatedSearchParamsSchema
 } from "@/lib/validations";
 import dbConnect from "@/lib/mongoose";
-import {Answer, Collection, Vote} from "@/database";
-import {tag} from "postcss-selector-parser";
+import {Answer, Collection, Interaction, Vote} from "@/database";
 import {revalidatePath} from "next/cache";
 import {createInteraction} from "@/lib/actions/interaction.actions";
 import {after} from "next/server";
+import {auth} from "@/auth";
 
 export async function createQuestion (
     params: CreateQuestionParams
@@ -238,33 +238,50 @@ export async function getQuestions (
     const limit = Number(pageSize);
 
     const filterQuery: FilterQuery<typeof Question> = {}
-    if (filter === "recommended") return { success: true, data: { questions: [], isNext: false } };
-
-    if (query) {
-        filterQuery.$or = [
-            { title: { $regex: new RegExp(query, "i") } },
-            { content: { $regex: new RegExp(query, "i") } }
-        ]
-    }
-
-    let sortCriteria: {};
-    switch (filter) {
-        case "newest":
-            sortCriteria = { createdAt: -1 };
-            break;
-        case "unanswered":
-            filterQuery.answers = 0;
-            sortCriteria = { createdAt: -1 };
-            break;
-        case "popular":
-            sortCriteria = { upvotes: -1 };
-            break;
-        default:
-            sortCriteria = { createdAt: -1 };
-            break;
-    }
 
     try {
+        if (filter === "recommended") {
+            const session = await auth();
+            const userId = session?.user?.id;
+
+            if (!userId) {
+                return { success: true, data: { questions: [], isNext: false } };
+            }
+
+            const recommended = await getRecommendationQuestions({
+                userId, query, skip, limit
+            });
+
+            return {
+                success: true,
+                data: recommended
+            };
+        }
+
+        if (query) {
+            filterQuery.$or = [
+                { title: { $regex: new RegExp(query, "i") } },
+                { content: { $regex: new RegExp(query, "i") } }
+            ]
+        }
+
+        let sortCriteria: {};
+        switch (filter) {
+            case "newest":
+                sortCriteria = { createdAt: -1 };
+                break;
+            case "unanswered":
+                filterQuery.answers = 0;
+                sortCriteria = { createdAt: -1 };
+                break;
+            case "popular":
+                sortCriteria = { upvotes: -1 };
+                break;
+            default:
+                sortCriteria = { createdAt: -1 };
+                break;
+        }
+
         const totalQuestions = await Question.countDocuments(filterQuery);
 
         const questions = await Question.find(filterQuery)
@@ -402,6 +419,67 @@ export async function deleteQuestion (
     }
 };
 
+
+export async function getRecommendationQuestions ({
+    userId, query, skip, limit
+}: RecommendationParams) {
+    const interactions = await Interaction.find({
+        user: new Types.ObjectId(userId),
+        actionType: "question",
+        action: { $in: ["view", "upvote", "bookmark", "post"]}
+    })
+        .sort({ createdAt: -1 })
+        .limit(50)
+        .lean();
+
+    const interactedQuestionIds = interactions.map(
+        (i) => i.actionId
+    );
+
+    const interactedQuestions = await Question.find({
+        _id: { $in: interactedQuestionIds }
+    }).select("tags");
+
+    const allTags = interactedQuestions.flatMap((q) =>
+        q.tags.map((tag: Types.ObjectId) => tag.toString())
+    );
+
+    // examples
+    // const arr = [[1, 2], [3, 4]];
+    // arr.flatMap(x => x);
+    // output: [1, 2, 3, 4];
+
+    // 重複削除
+    const uniqueTagIds = [...new Set(allTags)];
+
+    const recommendedQuery: FilterQuery<typeof Question> = {
+        _id: { $nin: interactedQuestionIds },
+        author: { $ne: new Types.ObjectId(userId) },
+        tags: { $in: uniqueTagIds.map((id) => new Types.ObjectId(id)) }
+    }
+
+    if (query) {
+        recommendedQuery.$or = [
+            { title: { $regex: query, $options: "i" } },
+            { content: { $regex: query, $options: "i" } }
+        ];
+    }
+
+    const total = await Question.countDocuments(recommendedQuery);
+
+    const questions = await Question.find(recommendedQuery)
+        .populate("tags", "name")
+        .populate("author", "name image")
+        .sort({ upvoted: -1, views: -1 })
+        .skip(skip)
+        .limit(limit)
+        .lean();
+
+    return {
+        questions: JSON.parse(JSON.stringify(questions)),
+        isNext: total > skip + questions.length
+    }
+}
 // Server Actions are designed to be used in different contexts.
 // 1. In Server Components: They act like regular async functions.
 // 2. In Client Components: When used in form actions or event handlers, they are invoked via a POST request.
