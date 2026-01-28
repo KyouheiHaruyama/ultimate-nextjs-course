@@ -4,7 +4,7 @@ import action from "@/lib/handlers/action";
 import {GetUserAnswerSchema, GetUserSchema, GetUserTagsSchema, PaginatedSearchParamsSchema} from "@/lib/validations";
 import handleError from "@/lib/handlers/error";
 import {FilterQuery, PipelineStage, Types} from "mongoose";
-import {Answer, Question, User, Vote} from "@/database";
+import {Answer, Question, User} from "@/database";
 import {assignBadges} from "@/lib/utils";
 
 export async function getUsers(
@@ -71,13 +71,7 @@ export async function getUsers(
 
 export async function getUser(
     params: GetUserParams
-): Promise<ActionResponse<{
-    user: User,
-    totalQuestions: number,
-    totalAnswers: number,
-    badges: Badges,
-}>>
-{
+): Promise<ActionResponse<{ user: User }>> {
     const validationResult = await action({
         params,
         schema: GetUserSchema
@@ -93,30 +87,20 @@ export async function getUser(
         const user = await User.findById(userId);
         if (!user) throw new Error('User not found');
 
-        const { data: stats } = await getUserStats(userId);
-        const { totalQuestions, totalAnswers, badges } = stats!;
-
         return {
             success: true,
             data: {
                 user: JSON.parse(JSON.stringify(user)),
-                totalQuestions,
-                totalAnswers,
-                badges
             }
         };
     } catch (error) {
         return handleError(error) as ErrorResponse;
     }
-};
+}
 
 export async function getUserQuestions(
     params: GetUserQuestionsParams
-): Promise<ActionResponse<{
-    questions: Question[],
-    isNext: boolean,
-}>>
-{
+): Promise<ActionResponse<{ questions: Question[], isNext: boolean }>> {
     const validationResult = await action({
         params,
         schema: GetUserSchema
@@ -151,15 +135,11 @@ export async function getUserQuestions(
     } catch (error) {
         return handleError(error) as ErrorResponse;
     }
-};
+}
 
 export async function getUserAnswers(
     params: GetUserAnswersParams
-): Promise<ActionResponse<{
-    answers: Answer[],
-    isNext: boolean,
-}>>
-{
+): Promise<ActionResponse<{ answers: Answer[], isNext: boolean }>> {
     const validationResult = await action({
         params,
         schema: GetUserAnswerSchema
@@ -193,14 +173,11 @@ export async function getUserAnswers(
     } catch (error) {
         return handleError(error) as ErrorResponse;
     }
-};
+}
 
 export async function getUserTopTags(
     params: GetUserTagsParams
-): Promise<ActionResponse<{
-    tags: { _id: string, name: string, count: number }[],
-}>>
-{
+): Promise<ActionResponse<{ tags: { _id: string, name: string, count: number }[] }>> {
     const validationResult = await action({
         params,
         schema: GetUserTagsSchema
@@ -248,51 +225,53 @@ export async function getUserTopTags(
     } catch (error) {
         return handleError(error) as ErrorResponse;
     }
-};
+}
 
-export async function getUserStats(userId: string): Promise<ActionResponse<{
-    totalQuestions: number,
-    totalAnswers: number,
-    badges: Badges,
-}>> {
-    const totalQuestions = await Question.countDocuments({ author: userId });
-    const totalAnswers = await Question.countDocuments({ author: userId });
-
-    const questionUpvotes = await Vote.countDocuments({
-        author: userId,
-        actionType: "question",
-        voteType: "upvote"
+export async function getUserStats(
+    params: GetUserParams
+): Promise<ActionResponse<{ totalQuestions: number, totalAnswers: number, badges: Badges }>> {
+    const validationResult = await action({
+        params,
+        schema: GetUserSchema,
     });
 
-    const answerUpvotes = await Vote.countDocuments({
-        author: userId,
-        actionType: "question",
-        voteType: "upvote"
-    });
+    if (validationResult instanceof Error) {
+        return handleError(validationResult) as ErrorResponse;
+    }
 
-    const pipeline: PipelineStage[] = [
+    const { userId } = validationResult.params!;
+
+    const [questionStats] = await Question.aggregate([
         { $match: { author: new Types.ObjectId(userId) }},
-        { $group: { _id: "$author", count: { $sum: "$views" }}},
+        { $group: {
+            _id: null,
+            count: { $sum: 1 },
+            upvotes: { $sum: "$upvotes" },
+            views: { $sum: "$views" }
+        }}
+    ]);
 
-    ];
-    const questionViews = await Question.aggregate(pipeline);
-    const { count } = questionViews[0] || { count: 0 };
-
-    console.log(questionViews);
+    const [answerStats] = await Answer.aggregate([
+        { $match: { author: new Types.ObjectId(userId) }},
+        { $group: {
+            _id: null,
+            count: { $sum: 1 },
+            upvotes: { $sum: "$upvotes" }
+        }}
+    ]);
 
     const badges = assignBadges({ criteria: [
-            { type: "QUESTION_COUNT", count: totalQuestions },
-            { type: "ANSWER_COUNT", count: totalAnswers },
-            { type: "QUESTION_UPVOTES", count: questionUpvotes },
-            { type: "ANSWER_UPVOTES", count: answerUpvotes },
-            { type: "TOTAL_VIEWS", count }
+            { type: "QUESTION_COUNT", count: questionStats?.count },
+            { type: "ANSWER_COUNT", count: answerStats?.count },
+            { type: "QUESTION_UPVOTES", count: questionStats?.upvotes + answerStats?.upvotes },
+            { type: "TOTAL_VIEWS", count: questionStats?.views }
     ]});
 
     return {
         success: true,
         data: {
-            totalQuestions: totalQuestions || 0,
-            totalAnswers,
+            totalQuestions: questionStats?.count,
+            totalAnswers: answerStats?.count,
             badges
         }
     };
