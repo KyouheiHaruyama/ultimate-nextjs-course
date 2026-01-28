@@ -36,7 +36,7 @@ const Profile = async ({ params, searchParams }: RouteParams) => {
         </div>
     );
 
-    const { user, totalAnswers, totalQuestions } = data!;
+    const { user, totalAnswers, totalQuestions, badges } = data!;
 
     const {
         success: userQuestionsSuccess,
@@ -126,11 +126,8 @@ const Profile = async ({ params, searchParams }: RouteParams) => {
             <Stats
                 totalQuestions={totalQuestions}
                 totalAnswers={totalAnswers}
-                badges={{
-                    GOLD: 0,
-                    SILVER: 0,
-                    BRONZE: 0,
-                }}
+                badges={badges}
+                reputationPoints={user.reputation || 0}
             />
 
             <section className="mt-10 flex gap-10">
