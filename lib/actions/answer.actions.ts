@@ -2,7 +2,7 @@
 
 import mongoose from "mongoose";
 import {IAnswerDoc} from "@/database/models/answer.models";
-import {AnswerServerSchema, DeleteAnswerSchema, DeleteQuestionSchema, GetAnswersSchema} from "@/lib/validations";
+import {AnswerServerSchema, DeleteAnswerSchema, GetAnswersSchema} from "@/lib/validations";
 import handleError from "@/lib/handlers/error";
 import {Answer, Question, Vote} from "@/database";
 import {revalidatePath} from "next/cache";
