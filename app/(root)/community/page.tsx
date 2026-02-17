@@ -25,7 +25,7 @@ const Community = async ({ searchParams }: RouteParams) => {
         <div>
             <h1 className="h1-bold text-dark100_light900">All Users</h1>
 
-            <div className="mt-11 flex justify-between gap-5 max-sm:flex-col sm:items-center">
+            <div className="mt-11 flex justify-between gap-5 max-sm:flex-col max-lg:w-full sm:items-center">
                 <LocalSearch
                     route={ROUTES.COMMUNITY}
                     iconPosition="left"
