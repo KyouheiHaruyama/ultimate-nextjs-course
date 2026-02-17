@@ -5,12 +5,25 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="547fdbe3-7b9e-424e-8e2c-7277d174fa08" name="変更" comment="">
-      <change afterPath="$PROJECT_DIR$/app/(root)/community/error.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/(root)/community/loading.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/cards/JobCard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/filters/GlobalFilter.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/filters/JobFilter.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/actions/general.actions.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/actions/job.actions.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/filters/HomeFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/filters/HomeFilter.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/actions/question.actions.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/actions/question.actions.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(root)/community/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(root)/community/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(root)/jobs/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(root)/jobs/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/filters/CommonFilter.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/filters/CommonFilter.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/navigation/navbar/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/navigation/navbar/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/constants/filters.ts" beforeDir="false" afterPath="$PROJECT_DIR$/constants/filters.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/validations.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/validations.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/types/action.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/types/action.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/types/global.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/types/global.d.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -33,35 +46,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "git-widget-placeholder": "profile",
-    "js.debugger.nextJs.config.created.client": "true",
-    "js.debugger.nextJs.config.created.server": "true",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/Users/haruyamakyouhei/WebstormProjects/ultimate-nextjs-course/database/models",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "to.speed.mode.migration.done": "true",
-    "ts.external.directory.path": "/Users/haruyamakyouhei/WebstormProjects/ultimate-nextjs-course/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;profile&quot;,
+    &quot;js.debugger.nextJs.config.created.client&quot;: &quot;true&quot;,
+    &quot;js.debugger.nextJs.config.created.server&quot;: &quot;true&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/haruyamakyouhei/WebstormProjects/ultimate-nextjs-course/database/models&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/haruyamakyouhei/WebstormProjects/ultimate-nextjs-course/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mongo"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mongo&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/database/models" />
@@ -112,7 +125,10 @@
       <workItem from="1757658227755" duration="2908000" />
       <workItem from="1760058798775" duration="95922000" />
       <workItem from="1767587735742" duration="20545000" />
-      <workItem from="1768276819485" duration="127722000" />
+      <workItem from="1768276819485" duration="136900000" />
+      <workItem from="1770009200055" duration="59000" />
+      <workItem from="1770024442178" duration="13025000" />
+      <workItem from="1770727475763" duration="4071000" />
     </task>
     <servers />
   </component>

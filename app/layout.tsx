@@ -1,28 +1,29 @@
 import type { Metadata } from "next";
 import React, {ReactNode} from "react";
-import { Inter, Space_Grotesk as SpaceGrotesk } from "next/font/google";
+
 import "./globals.css";
 import ThemeProvider from "@/context/Theme";
 import { Toaster } from "@/components/ui/sonner"
 import {SessionProvider} from "next-auth/react";
 import {auth} from "@/auth";
+import localFont from "next/font/local";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ['latin'],
-  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+const inter = localFont({
+    src: "./fonts/InterVF.ttf",
+    variable: "--font-inter",
+    weight: '100 200 300 400 500 600 700 800 900',
 });
 
-const spaceGrotesk = SpaceGrotesk({
+const spaceGrotesk = localFont({
+    src: "./fonts/SpaceGroteskVF.ttf",
     variable: "--font-space-grotesk",
-    subsets: ['latin'],
-    weight: ['300', '400', '500', '600', '700'],
+    weight: '300 400 500 600 700',
 });
 
 export const metadata: Metadata = {
-    title: "Dev Overflow",
+    title: "Dev Overflow – StackOverflow Clone Built with Next.js",
     description:
-        "A community-driven platform for asking and answering programming questions. Get help, share knowledge, and collaborate with developers from around the world. Explore topics in web development, mobile app development, algorithms, data structures, and more.",
+        "Dev Overflow is a modern Q&A platform for developers, inspired by StackOverflow and built with Next.js. Ask questions, share answers, and collaborate with devs worldwide in a fast, responsive interface.",
     icons: {
         icon: "/images/site-logo.svg",
     },

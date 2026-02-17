@@ -4,6 +4,7 @@ import {useRouter, useSearchParams} from "next/navigation";
 import {cn} from "@/lib/utils";
 import {Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {formUrlQuery} from "@/lib/url";
+import Image from "next/image";
 
 interface FilterProps {
     name: string;
@@ -48,6 +49,13 @@ const CommonFilter = ({
                     otherClasses)}
                     area-label="Filter options"
                 >
+                    <Image
+                        src="/icons/location.svg"
+                        alt="location"
+                        width={18}
+                        height={18}
+                    />
+
                     <div className="line-clamp-1 flex-1 text-left">
                         <SelectValue placeholder="Select a filter" />
                     </div>

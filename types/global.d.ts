@@ -97,6 +97,32 @@ declare global {
         SILVER: number;
         BRONZE: number;
     }
+
+    interface Job {
+        job_id?: string;
+        employer_name?: string;
+        employer_logo?: string | undefined;
+        employer_website?: string;
+        job_employment_type?: string;
+        job_title?: string;
+        job_description?: string;
+        job_apply_link?: string;
+        job_city?: string;
+        job_state?: string;
+        job_country?: string;
+    }
+
+    interface Country {
+        name: {
+            common: string;
+        };
+    }
+
+    interface GlobalSearchedItem {
+        id: string;
+        type: "question" | "answer" | "user" | "tag";
+        title: string;
+    }
 }
 
 // このファイルをモジュールとして扱わせつつ、上記で global を拡張
