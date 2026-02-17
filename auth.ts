@@ -6,7 +6,7 @@ import Credentials from "next-auth/providers/credentials";
 import {api} from "@/lib/api";
 import {IAccountDoc} from "@/database/models/account.models";
 import {SignInSchema} from "@/lib/validations";
-import {IUser, IUserDoc} from "@/database/models/user.models";
+import {IUserDoc} from "@/database/models/user.models";
 import bcrypt from "bcryptjs";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -32,7 +32,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     const isValidPassword = await bcrypt.compare(password, existingAccount.password!);
                     if (isValidPassword) {
                         return {
-                            id: existingUser.id,
+                            id: existingUser._id.toString(),
                             name: existingUser.name,
                             email: existingUser.email,
                             image: existingUser.image
