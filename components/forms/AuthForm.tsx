@@ -100,7 +100,7 @@ const AuthForm = <T extends FieldValues>({
 
                 {formType === "SIGN_IN" ? (
                     <p>
-                        Don't have an account? {" "}
+                        Do not have an account? {" "}
                         <Link
                             href={ROUTES.SIGN_UP}
                             className="paragraph-semibold primary-text-gradient"

@@ -265,7 +265,7 @@ export async function getQuestions (
             ]
         }
 
-        let sortCriteria: {};
+        let sortCriteria = {};
         switch (filter) {
             case "newest":
                 sortCriteria = { createdAt: -1 };

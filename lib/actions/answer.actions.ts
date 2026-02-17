@@ -88,7 +88,7 @@ export async function getAnswers (params: GetAnswersParams): Promise<ActionRespo
     const skip = (Number(page) - 1) * pageSize;
     const limit = Number(pageSize);
 
-    let sortCriteria: {};
+    let sortCriteria = {};
 
     switch (params.filter) {
         case 'latest':

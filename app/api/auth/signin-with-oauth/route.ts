@@ -23,7 +23,7 @@ export async function POST (request: Request) {
         if (!validatedData.success) throw new ValidationError(validatedData.error.flatten().fieldErrors);
 
         const { name, username, email, image } = user;
-        let slugifiedUsername = slugify(username, { lower: true, strict: true, trim: true });
+        const slugifiedUsername = slugify(username, { lower: true, strict: true, trim: true });
 
         let existingUser = await User.findOne({ email }).session(session);
         if (!existingUser) {

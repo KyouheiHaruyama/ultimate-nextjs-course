@@ -109,6 +109,8 @@ const Editor = forwardRef<MDXEditorMethods, EditorProps>(
 
         />
     )
-})
+});
+
+Editor.displayName = 'Editor';
 
 export default Editor
