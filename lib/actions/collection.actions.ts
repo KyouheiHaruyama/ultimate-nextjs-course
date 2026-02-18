@@ -6,7 +6,8 @@ import handleError from "@/lib/handlers/error";
 import {Question, Collection} from "@/database";
 import {revalidatePath} from "next/cache";
 import {ROUTES} from "@/constants/routes";
-import mongoose, {FilterQuery, PipelineStage} from "mongoose";
+import mongoose, {PipelineStage} from "mongoose";
+import FilterQuery from "mongoose"
 
 export async function toggleSaveQuestion(
     params: CollectionBaseParams
@@ -109,7 +110,7 @@ export async function getSavedQuestions(
     const skip = (Number(page) - 1) * pageSize;
     const limit = Number(pageSize);
 
-    const filterQuery: FilterQuery<typeof Collection> = { author: userId };
+    const filterQuery: FilterQuery.QueryFilter<typeof Collection> = { author: userId };
     if (query) {
         filterQuery.$or = [
             { "title": { $regex: new RegExp(query, "i") }},
