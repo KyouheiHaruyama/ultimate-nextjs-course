@@ -1,6 +1,7 @@
 "use server";
 
-import mongoose, {FilterQuery, Types} from "mongoose";
+import mongoose, {Types} from "mongoose";
+import FilterQuery from "mongoose";
 
 import Question, {IQuestionDoc} from "@/database/models/question.models";
 import Tag, {ITagDoc} from "@/database/models/tag.models";
@@ -237,7 +238,7 @@ export async function getQuestions (
     const skip = (Number(page) - 1) * pageSize;
     const limit = Number(pageSize);
 
-    const filterQuery: FilterQuery<typeof Question> = {}
+    const filterQuery: FilterQuery.QueryFilter<typeof Question> = {}
 
     try {
         if (filter === "recommended") {
@@ -452,7 +453,7 @@ export async function getRecommendationQuestions ({
     // 重複削除
     const uniqueTagIds = [...new Set(allTags)];
 
-    const recommendedQuery: FilterQuery<typeof Question> = {
+    const recommendedQuery: FilterQuery.QueryFilter<typeof Question> = {
         _id: { $nin: interactedQuestionIds },
         author: { $ne: new Types.ObjectId(userId) },
         tags: { $in: uniqueTagIds.map((id) => new Types.ObjectId(id)) }

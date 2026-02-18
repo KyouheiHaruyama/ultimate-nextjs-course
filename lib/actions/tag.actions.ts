@@ -1,7 +1,7 @@
 import action from "@/lib/handlers/action";
 import {GetTagQuestionsSchema, PaginatedSearchParamsSchema} from "@/lib/validations";
 import handleError from "@/lib/handlers/error";
-import {FilterQuery} from "mongoose";
+import FilterQuery from "mongoose";
 import {Question, Tag} from "@/database";
 import dbConnect from "@/lib/mongoose";
 
@@ -18,7 +18,7 @@ export const getTags = async (
     const { page = 1, pageSize = 10, query, filter } = params;
     const skip = (Number(page) - 1) * pageSize;
     const limit = Number(pageSize);
-    const filterQuery: FilterQuery<typeof Tag> = {};
+    const filterQuery: FilterQuery.QueryFilter<typeof Tag> = {};
 
     if (query) {
         filterQuery.$or = [{
@@ -82,7 +82,7 @@ export const getTagQuestions = async (
         const tag = await Tag.findById(tagId);
         if (!tag) throw new Error('Tag not found');
 
-        const filterQuery: FilterQuery<typeof Question> = {
+        const filterQuery: FilterQuery.QueryFilter<typeof Question> = {
             tags: { $in: [tagId] }
         };
 

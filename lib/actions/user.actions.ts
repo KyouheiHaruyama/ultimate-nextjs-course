@@ -3,7 +3,8 @@
 import action from "@/lib/handlers/action";
 import {GetUserAnswerSchema, GetUserSchema, GetUserTagsSchema, PaginatedSearchParamsSchema} from "@/lib/validations";
 import handleError from "@/lib/handlers/error";
-import {FilterQuery, PipelineStage, Types} from "mongoose";
+import {PipelineStage, Types} from "mongoose";
+import FilterQuery from "mongoose";
 import {Answer, Question, User} from "@/database";
 import {assignBadges} from "@/lib/utils";
 
@@ -23,7 +24,7 @@ export async function getUsers(
     const skip = (Number(page) - 1) * pageSize;
     const limit = Number(pageSize);
 
-    const filterQuery: FilterQuery<typeof User> = {};
+    const filterQuery: FilterQuery.QueryFilter<typeof User> = {};
     if (query) {
         filterQuery.$or = [
             { name: { $regex: query, $options: "i" } },
